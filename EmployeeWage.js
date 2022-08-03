@@ -12,6 +12,7 @@ let totalWorkingDays = 0;
 let totalEmployeeWage = 0;
 let dayCounter = 0;
 let employeeDailyWageArray = new Array();
+let employeeDailyWageMap = new Map();
 
 function getWorkingHours(employeeCheck) {
 
@@ -64,12 +65,19 @@ function isAnyPartTimeWage(dailyWage){
     return dailyWage.includes("80");
 }
 
+function totalDaysWorked(numberOfDays, dailyWage){
+    if(dailyWage > 0)
+        return numberOfDays + 1;
+    return numberOfDays;
+}
+
 while (totalEmployeeHours <= MAX_HOURS_IN_MONTH && totalWorkingDays < NUM_OF_WORKING_DAYS) {
     totalWorkingDays++;
     let employeeCheck = Math.floor(Math.random() * 10) % 3;
     let employeeHours = getWorkingHours(employeeCheck);
     totalEmployeeHours += employeeHours;
     employeeDailyWageArray.push(calculateDailyWage(employeeHours));
+    employeeDailyWageMap.set(totalWorkingDays, calculateDailyWage(employeeHours));
 }
 
 //Use Case - 7A
@@ -106,10 +114,8 @@ console.log("Check If Any Part Time Wage: " + mapDayWithWageArray.some(isAnyPart
 
 //Use Case - 7G
 //Find Number of days the Employee Worked
-function totalDaysWorked(numberOfDays, dailyWage){
-    if(dailyWage > 0)
-        return numberOfDays + 1;
-    return numberOfDays;
-}
-console.log("Numbe rof Days the Employee has Worked = " + employeeDailyWageArray.reduce(totalDaysWorked, 0));
+console.log("Number of Days the Employee has Worked = " + employeeDailyWageArray.reduce(totalDaysWorked, 0));
 
+//Use Case - 8
+console.log(employeeDailyWageMap);
+console.log("Employee Wage Map : \nTotal Working Hours : "+ Array.from(employeeDailyWageMap.values()).reduce(totalWageUsingReduce,0));
